@@ -10,13 +10,13 @@ namespace ØvelseTre
             Methods meth = new Methods();
             for (int i = 0; i < 8; i++)
             {
-                ThreadPool.QueueUserWorkItem(meth.WritDataWithLowPriority);
+                ThreadPool.QueueUserWorkItem(meth.WritDataWithLowPriority, ThreadPriority.Lowest);
             }
             for (int i = 0; i < 8; i++)
             {
                 ThreadPool.QueueUserWorkItem(meth.WriteDataFromThreadPoolWithHigestPriority);
             }
-
+            Thread.Sleep(10000);
             Console.WriteLine(ThreadPool.ThreadCount);
 
 
@@ -36,11 +36,7 @@ namespace ØvelseTre
             thi.Priority = ThreadPriority.Highest;
             Console.WriteLine($"Id:{thi.ManagedThreadId} isAlive:{thi.IsAlive} isBackground:{ thi.IsBackground} priority:{thi.Priority}" );
 
-            for (int i = 0; i < 10; i++)
-            {
-                Thread.Sleep(1000);
-                Console.WriteLine($"Id:{thi.ManagedThreadId} isAlive:{thi.IsAlive} isBackground:{ thi.IsBackground} priority:{thi.Priority}" );
-            }
+
 
         }
 
@@ -48,8 +44,8 @@ namespace ØvelseTre
         {
             Thread.Sleep(1000);
             Thread thi = Thread.CurrentThread;
+            thi.Priority = (ThreadPriority) obj;
 
-            thi.Priority = ThreadPriority.Lowest;
             Console.WriteLine($"Id:{thi.ManagedThreadId} isAlive:{thi.IsAlive} isBackground:{ thi.IsBackground} priority:{thi.Priority}" );
 
 
